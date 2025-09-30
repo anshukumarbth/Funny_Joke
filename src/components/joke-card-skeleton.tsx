@@ -4,7 +4,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 export function JokeCardSkeleton() {
   return (
     <Card className="w-full overflow-hidden shadow-lg">
-      <Skeleton className="h-60 w-full" />
       <CardHeader>
         <div className="flex justify-between items-center">
           <Skeleton className="h-8 w-1/3" />

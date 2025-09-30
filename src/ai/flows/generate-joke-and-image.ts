@@ -3,7 +3,7 @@
 /**
  * @fileOverview Generates a joke and associated image prompts for a given category.
  *
- * - generateJokeAndImage - A function that generates a joke and image prompts.
+ * - generateJokeAndImage - A function that generates a joke.
  * - JokeAndImageInput - The input type for the generateJokeAndImage function.
  * - JokeAndImageOutput - The return type for the generateJokeAndImage function.
  */
@@ -32,11 +32,6 @@ const generateJokeAndImagePrompt = ai.definePrompt({
 - Punchlines should feel surprising and fun for animation.
 - Provide a Hindi translation for the joke.
 
-🎨 Visuals:
-- Each joke must include an image with:
-  - "style_hint": 2–3 words (e.g., "Comic Noir", "Retro Vaporwave").  
-  - "image_prompt": A funny, cinematic, detailed visual (no text or watermarks).
-
 📦 Schema:
 {
   "category": "{{{category}}}",
@@ -49,10 +44,6 @@ const generateJokeAndImagePrompt = ai.definePrompt({
   "hindi_joke": {
     "setup": "[hindi text or empty if OneLiner]",
     "punchline": "[hindi text]"
-  },
-  "image": {
-    "style_hint": "[2–3 words]",
-    "image_prompt": "[funny descriptive visual prompt]"
   }
 }
 

@@ -5,11 +5,6 @@
  */
 import {z} from 'genkit';
 
-export const GenerateImageInputSchema = z.object({
-  prompt: z.string().describe('The prompt for image generation.'),
-  style_hint: z.string().describe('The style hint for the image.'),
-});
-
 export const JokeAndImageInputSchema = z.object({
   category: z.string().describe('The category of the joke.'),
 });
@@ -30,14 +25,4 @@ export const JokeAndImageOutputSchema = z.object({
       punchline: z.string().describe('The punchline for the joke in Hindi.'),
     })
     .describe('The joke content in Hindi.'),
-  image:
-    z.object({
-      style_hint: z.string().describe('2-3 words describing the visual style of the image.'),
-      image_prompt: z.string().describe('A funny, cinematic, detailed visual prompt for image generation.'),
-    })
-    .describe('The image prompts for the joke.'),
-});
-
-export const GenerateImageOutputSchema = z.object({
-  imageUrl: z.string().describe('The generated image as a data URI.'),
 });
