@@ -7,6 +7,7 @@ import {z} from 'genkit';
 
 export const GenerateImageInputSchema = z.object({
   prompt: z.string().describe('The prompt for image generation.'),
+  style_hint: z.string().describe('The style hint for the image.'),
 });
 
 export const JokeAndImageInputSchema = z.object({

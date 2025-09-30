@@ -23,7 +23,7 @@ export function JokeCard({ joke }: JokeCardProps) {
   useEffect(() => {
     const fetchImage = async () => {
       setIsImageLoading(true);
-      const imageResult = await getImage({ prompt: `${joke.image.image_prompt}, ${joke.image.style_hint}` });
+      const imageResult = await getImage({ prompt: joke.image.image_prompt, style_hint: joke.image.style_hint });
       if (imageResult.data?.imageUrl) {
         setImageUrl(imageResult.data.imageUrl);
       } else {

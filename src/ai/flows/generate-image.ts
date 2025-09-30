@@ -28,7 +28,7 @@ const generateImageFlow = ai.defineFlow(
   async (input) => {
     const { media } = await ai.generate({
       model: 'googleai/imagen-4.0-fast-generate-001',
-      prompt: input.prompt,
+      prompt: `A vibrant, cinematic, and funny image inspired by the following scene: "${input.prompt}". The image should be in the style of ${input.style_hint}. Do not include any text, letters, or watermarks in the image.`,
     });
     
     if (!media.url) {
