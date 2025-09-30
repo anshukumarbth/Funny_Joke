@@ -11,7 +11,7 @@ export default async function Home() {
       <div className="w-full max-w-4xl p-4 md:p-8">
         <header className="text-center my-8 md:my-12">
           <h1 className="font-headline text-5xl md:text-7xl font-bold bg-gradient-to-r from-primary via-purple-500 to-accent bg-clip-text text-transparent">
-            LaughTrack API
+            Funny Joke
           </h1>
           <p className="mt-4 text-lg md:text-xl text-foreground/80">
             Your on-demand comedy engine. Select a category and let the AI do the rest!
