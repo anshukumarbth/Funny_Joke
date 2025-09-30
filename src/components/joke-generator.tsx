@@ -5,11 +5,9 @@ import { Icons } from '@/components/icons';
 import { JokeCard } from '@/components/joke-card';
 import { JokeCardSkeleton } from '@/components/joke-card-skeleton';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { useState, useTransition } from 'react';
-
-const JOKE_CATEGORIES = ['Any', 'Workplace', 'Tech', 'Animals', 'Dad Jokes', 'Science'];
 
 type JokeGeneratorProps = {
   initialJoke: JokeResult;
@@ -17,13 +15,13 @@ type JokeGeneratorProps = {
 
 export function JokeGenerator({ initialJoke }: JokeGeneratorProps) {
   const [jokeResult, setJokeResult] = useState<JokeResult>(initialJoke);
-  const [selectedCategory, setSelectedCategory] = useState<string>(JOKE_CATEGORIES[0]);
+  const [categoryInput, setCategoryInput] = useState<string>('Any');
   const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
 
   const handleGenerateJoke = () => {
     startTransition(async () => {
-      const result = await getJoke(selectedCategory);
+      const result = await getJoke(categoryInput);
       if (result.error) {
         toast({
           variant: 'destructive',
@@ -35,26 +33,30 @@ export function JokeGenerator({ initialJoke }: JokeGeneratorProps) {
     });
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleGenerateJoke();
+    }
+  };
+
   return (
     <div className="flex flex-col items-center gap-8 w-full">
       <div className="w-full max-w-md bg-card p-4 rounded-lg border shadow-md flex flex-col sm:flex-row gap-4 items-center">
         <div className="w-full sm:w-auto flex-grow">
-          <Select value={selectedCategory} onValueChange={setSelectedCategory} disabled={isPending}>
-            <SelectTrigger id="category-select" aria-label="Select joke category">
-              <SelectValue placeholder="Select a category..." />
-            </SelectTrigger>
-            <SelectContent>
-              {JOKE_CATEGORIES.map(category => (
-                <SelectItem key={category} value={category}>
-                  {category}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <Input
+            id="category-input"
+            type="text"
+            placeholder="Enter a joke category..."
+            value={categoryInput}
+            onChange={(e) => setCategoryInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            disabled={isPending}
+            aria-label="Joke category input"
+          />
         </div>
         <Button
           onClick={handleGenerateJoke}
-          disabled={isPending}
+          disabled={isPending || !categoryInput}
           className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground font-bold"
           size="lg"
         >

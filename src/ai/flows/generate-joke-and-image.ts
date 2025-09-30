@@ -10,30 +10,10 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import { JokeAndImageInputSchema, JokeAndImageOutputSchema } from '@/ai/schemas';
 
-const JokeAndImageInputSchema = z.object({
-  category: z.string().describe('The category of the joke.'),
-});
+
 export type JokeAndImageInput = z.infer<typeof JokeAndImageInputSchema>;
-
-const JokeAndImageOutputSchema = z.object({
-  category: z.string().describe('The category of the joke.'),
-  joke_id: z.string().describe('A unique ID for the joke in the format J-[6char ID].'),
-  joke_type: z.enum(['SetupPunchline', 'OneLiner', 'Scenario']).describe('The format of the joke.'),
-  joke: z
-    .object({
-      setup: z.string().describe('The setup for the joke, may be empty if OneLiner.'),
-      punchline: z.string().describe('The punchline for the joke.'),
-    })
-    .describe('The joke content.'),
-  image:
-    z.object({
-      style_hint: z.string().describe('2-3 words describing the visual style of the image.'),
-      image_prompt: z.string().describe('A funny, cinematic, detailed visual prompt for image generation.'),
-    })
-    .describe('The image prompts for the joke.'),
-});
-
 export type JokeAndImageOutput = z.infer<typeof JokeAndImageOutputSchema>;
 
 export async function generateJokeAndImage(input: JokeAndImageInput): Promise<JokeAndImageOutput> {
@@ -44,35 +24,40 @@ const generateJokeAndImagePrompt = ai.definePrompt({
   name: 'generateJokeAndImagePrompt',
   input: {schema: JokeAndImageInputSchema},
   output: {schema: JokeAndImageOutputSchema},
-  prompt: `You are 'LaughTrack-API', a joke content engine for a Next.js website. Generate a joke in JSON format based on the following category. Adhere to the following rules and schema:
+  prompt: `You are 'LaughTrack-API', a joke content engine for a Next.js website. Generate a joke in JSON format based on the following category. Provide the joke in both English and Hindi. Adhere to the following rules and schema:
 
 🎭 Rules:
 - Jokes must be witty, fresh, PG-rated, and original.  
-- Use formats: \"SetupPunchline\", \"OneLiner\", or \"Scenario\".  
+- Use formats: "SetupPunchline", "OneLiner", or "Scenario".  
 - Punchlines should feel surprising and fun for animation.
+- Provide a Hindi translation for the joke.
 
 🎨 Visuals:
 - Each joke must include an image with:
-  - \"style_hint\": 2–3 words (e.g., \"Comic Noir\", \"Retro Vaporwave\").  
-  - \"image_prompt\": A funny, cinematic, detailed visual (no text or watermarks).
+  - "style_hint": 2–3 words (e.g., "Comic Noir", "Retro Vaporwave").  
+  - "image_prompt": A funny, cinematic, detailed visual (no text or watermarks).
 
 📦 Schema:
 {
-  \"category\": \"{{{category}}}\",
-  \"joke_id\": \"J-[6char ID]\".
-  \"joke_type\": \"SetupPunchline\" | \"OneLiner\" | \"Scenario\",
-  \"joke\": {
-    \"setup\": \"[text or empty if OneLiner]\".
-    \"punchline\": \"[text]\"
+  "category": "{{{category}}}",
+  "joke_id": "J-[6char ID]",
+  "joke_type": "SetupPunchline" | "OneLiner" | "Scenario",
+  "joke": {
+    "setup": "[text or empty if OneLiner]",
+    "punchline": "[text]"
   },
-  \"image\": {
-    \"style_hint\": \"[2–3 words]\".
-    \"image_prompt\": \"[funny descriptive visual prompt]\"
+  "hindi_joke": {
+    "setup": "[hindi text or empty if OneLiner]",
+    "punchline": "[hindi text]"
+  },
+  "image": {
+    "style_hint": "[2–3 words]",
+    "image_prompt": "[funny descriptive visual prompt]"
   }
 }
 
 Category: {{{category}}}
-`, // Adjusted prompt to use Handlebars and include the category
+`,
   config: {
     safetySettings: [
       {
